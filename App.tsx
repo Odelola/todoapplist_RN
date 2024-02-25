@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useFonts } from 'expo-font';
+import { ThemeProvider } from '@shopify/restyle';
+import theme, { appPalette } from './theme';
+import { StatusBar } from "react-native";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Home } from "./screens";
 
 export default function App() {
+
+  const [fontsLoaded] = useFonts({
+    // Lato Fonts
+    'LatoBold': require('./assets/fonts/Lato/Lato-Bold.ttf'),
+    'LatoRegular': require('./assets/fonts/Lato/Lato-Regular.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  const AppStack = createNativeStackNavigator();
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider theme={theme}>
+      <StatusBar barStyle="light-content" backgroundColor={appPalette.appBackground} />
+
+      <NavigationContainer>
+        <AppStack.Navigator screenOptions={{ headerShown: false }}>
+          <AppStack.Screen name="Home" component={Home} />
+        </AppStack.Navigator>
+      </NavigationContainer>
+
+    </ThemeProvider >
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

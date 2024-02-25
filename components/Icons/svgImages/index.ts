@@ -1,0 +1,1 @@
+export {default as NoTaskImage } from "./NoTaskImage.svg"
